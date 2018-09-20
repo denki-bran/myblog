@@ -1,29 +1,20 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view/>
   </div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+html,body,p,dl,dt,dd,table,td,th,input,img,form,div,span,ul,ol,li,h1,h2,h3,h4,h5,h6,select,fieldset,button,sub,sup,textarea{margin:0;padding:0;}
+body{font:12px/1.5;background-color:#f4f4f4;color:#666666;font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;}
+table{border-collapse:collapse;border-spacing:0;}
+h1,h2,h3,h4,h5,h6{font-size:100%;}
+img,iframe{vertical-align:top;border:0 none;}
+ul,ol{list-style:none outside none;}
+.clearfix:after{content:"";display:block;clear:both;}
+.clearfix{*zoom:1;}
+a{color:#333333;text-decoration:none;}
+a:hover{color:#ff3300;text-decoration:underline;}
+:focus{outline:0;}
+.clear{clear:both;overflow:hidden;font-size:0;height:0;line-height:0;}
 </style>

@@ -1,12 +1,18 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <conLeft/>
+    <conMid/>
   </div>
 </template>
 
 <script>
-
+import conLeft from '@/components/con-left.vue';
+import conMid from '@/components/con-mid.vue';
 export default {
-  name: 'home'
+    name: 'home',
+    components:{
+        conLeft,
+        conMid
+    }
 }
 </script>
