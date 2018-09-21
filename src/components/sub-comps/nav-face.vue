@@ -1,5 +1,5 @@
 <template>
-    <div class="round-face">
+    <div class="nav-face">
         <div class="face-icon">
             <img src="@/assets/images/face.png" alt="">
         </div>
@@ -7,14 +7,11 @@
 </template>
 <script>
     export default{
-        name:'round-face',
-        data(){
-            
-        }
+        name:'nav-face'
     }
 </script>
 <style lang="scss">
-    .round-face{
+    .nav-face{
         width:100%;
         height:120px;
         position:relative;
