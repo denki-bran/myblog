@@ -1,35 +1,42 @@
 <template>
     <div class="nav-list">
         <ul class="nav-ul">
-            <li @mouseover="hover=0" class="nav-item">
+            <li @mouseover="handleHover(0)" class="nav-item">
                 <a href="javascript:;">
                     形 | Skill
                 </a>
             </li>
-            <li @mouseover="hover=1" class="nav-item">
+            <li @mouseover="handleHover(1)" class="nav-item">
                 <a href="javascript:;">
                     影 | Create
                 </a>
             </li>
-            <li @mouseover="hover=2" class="nav-item">
+            <li @mouseover="handleHover(2)" class="nav-item">
                 <a href="javascript:;">
                     神 | Life
                 </a>
             </li>
-            <li @mouseover="hover=3" class="nav-item">
+            <li @mouseover="handleHover(3)" class="nav-item">
                 <a href="javascript:;">
-                    荒原 | Index
+                    断章 | Index
                 </a>
             </li>
         </ul>
     </div>
 </template>
 <script>
+    import {mapActions} from 'vuex'
     export default{
         name:'nav-info',
         data(){
             return{
                 hover:-1
+            }
+        },
+        methods:{
+            ...mapActions(['setChangeState']),
+            handleHover(num){
+                this.setChangeState({num});
             }
         }
     }
