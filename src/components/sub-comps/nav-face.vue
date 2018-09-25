@@ -1,16 +1,21 @@
 <template>
     <div class="nav-face">
-        <div class="face-icon">
+        <div @click="faceClicked=!faceClicked" @animationend="faceClicked=!faceClicked" :class="[faceClicked?'face-icon-clicked':'','face-icon']">
             <img src="@/assets/images/face.png" alt="">
         </div>
     </div>
 </template>
 <script>
     export default{
-        name:'nav-face'
+        name:'nav-face',
+        data(){
+            return{
+                faceClicked:false
+            }
+        }
     }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     .nav-face{
         width:100%;
         height:120px;
@@ -31,6 +36,21 @@
         &:hover{
             cursor:pointer;
                 border: 2px #f44336 solid;
+        }
+    }
+    .face-icon-clicked{
+        -webkit-animation: rotateAni 5s 1;
+        -moz-animation:    rotateAni 5s 1;
+        -o-animation:      rotateAni 5s 1;
+        animation:         rotateAni 5s 1; 
+    }
+
+    @keyframes rotateAni {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
         }
     }
 </style>

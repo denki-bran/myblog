@@ -1,14 +1,23 @@
 <template>
     <div class="con-mid">
-        <midList/>
+        <midList v-if='page === "home"'/>
+        <articleDetail v-else-if='page === "article"' />
     </div>
 </template>
 <script>
     import midList from '@/components/mid-list.vue'
+    import articleDetail from '@/components/article-detail.vue'
     export default{
         name:'con-mid',
         components:{
-            midList
+            midList,
+            articleDetail
+        },
+        computed:{
+            page () {
+                console.log(this.$route.name);
+              return this.$route.name
+            }
         }
     }
 </script>
