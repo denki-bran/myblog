@@ -1,0 +1,69 @@
+ Article
++-------------------+--------------+------+-----+---------+-------+
+| Field             | Type         | Null | Key | Default | Extra |
++-------------------+--------------+------+-----+---------+-------+
+| article_id        | varchar(20)  | NO   | PRI | NULL    |       |
+| article_title     | varchar(100) | NO   |     | NULL    |       |
+| article_desc      | varchar(300) | NO   |     | NULL    |       |
+| article_time      | datetime     | NO   |     | NULL    |       |
+| article_bigtag_id | varchar(20)  | NO   |     | NULL    |       |
++-------------------+--------------+------+-----+---------+-------+
+
+Article_Detail
++-------------------+----------------+------+-----+---------+-------+
+| Field             | Type           | Null | Key | Default | Extra |
++-------------------+----------------+------+-----+---------+-------+
+| article_id        | varchar(20)    | NO   | PRI | NULL    |       |
+| article_title     | varchar(100)   | NO   |     | NULL    |       |
+| article_desc      | varchar(300)   | NO   |     | NULL    |       |
+| article_detail    | varchar(20000) | NO   |     | NULL    |       |
+| article_view_num  | int(11)        | NO   |     | 0       |       |
+| article_time      | datetime       | NO   |     | NULL    |       |
+| article_bigtag_id | varchar(20)    | NO   |     | NULL    |       |
++-------------------+----------------+------+-----+---------+-------+
+
+ Big_Tag
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| big_tag_id      | varchar(20)  | NO   | PRI | NULL    |       |
+| big_tag_name    | varchar(100) | NO   |     | NULL    |       |
+| big_tag_href    | varchar(300) | NO   |     | NULL    |       |
+| big_tag_use_num | int(11)      | NO   |     | 0       |       |
++-----------------+--------------+------+-----+---------+-------+
+
+ Tag
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| tag_id      | varchar(20)  | NO   | PRI | NULL    |       |
+| tag_name    | varchar(100) | NO   |     | NULL    |       |
+| tag_href    | varchar(300) | NO   |     | NULL    |       |
+| tag_use_num | int(11)      | NO   |     | 0       |       |
++-------------+--------------+------+-----+---------+-------+
+
+
+Tag_Relationship
++---------------------+-------------+------+-----+---------+----------------+
+| Field               | Type        | Null | Key | Default | Extra          |
++---------------------+-------------+------+-----+---------+----------------+
+| tag_relationship_id | int(11)     | NO   | PRI | NULL    | auto_increment |
+| tag_id              | varchar(20) | NO   |     | NULL    |                |
+| article_id          | varchar(20) | NO   |     | NULL    |                |
++---------------------+-------------+------+-----+---------+----------------+
+
+ Big_Tag content
++-----------------+--------------+------+-----+---------+-------+
+| big_tag_id      | bigtag_01    | bigtag_02  | bigtag_03 | NULL    |       |
+| big_tag_name    | 形 | 影   |   神  |     |       |
+| big_tag_href    | varchar(300) | NO   |     | NULL    |       |
+| big_tag_use_num | 0     | 0   | 0    | 0       |       |
++-----------------+--------------+------+-----+---------+-------+
+
+在一次提交article POST的时候需要处理哪些内容：
+1.  向Article_Detail这个table提交内容
+2.  向Article这个table提交内容
+3.  通过传参的big_tag_name，向Big_Tag增加一次统计上的提交
+4.  
+    4.1 遍历传参的tag_name，向Tag提起查询，如果已存在tag_name，增加一次统计上的提交。
+    4.2 如果不存在该tag_name，增加该tag，并增加一次统计上的提交

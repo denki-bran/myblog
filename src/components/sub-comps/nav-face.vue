@@ -35,7 +35,7 @@
         }
         &:hover{
             cursor:pointer;
-                border: 2px #f44336 solid;
+            border: 2px #f44336 solid;
         }
     }
     .face-icon-clicked{
