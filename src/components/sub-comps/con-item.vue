@@ -1,17 +1,18 @@
 <template>
     <div class="con-item">
         <div class="con-item-head clearfix con-el">
-            <h2 @click='enterArticle' class="item-head-title">{{itmData.title}}</h2>
-            <h3 class="item-head-time">{{itmData.date}}</h3>
+            <h2 @click='enterArticle' class="item-head-title">{{itmData.article_title}}</h2>
+            <h3 class="item-head-time">{{itmData.article_time}}</h3>
         </div>
-        <div class="con-item-desc con-el">
-            <p v-for="(para,idx) in itmData.desc" :key="idx">{{para}}</p>
+        <div class="con-item-desc con-el" v-html="itmData.article_desc">
+
+            <!-- <p v-for="(para,idx) in itmData.article_desc" :key="idx">{{para}}</p> -->
         </div>
         <div class="con-item-foot con-el clearfix">
             <section class="tag tag-main">
                 <span class="tag-type">世界</span>
                 <a href="javascript:;" class="tag-name">
-                    {{itmData.bigtag.name}}
+                    {{itmData.article_bigtag_id}}
                 </a>
             </section>
             <section class="tag">

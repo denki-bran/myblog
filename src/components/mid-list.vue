@@ -22,6 +22,7 @@
             setData(){
                 this.setIndexData();
                 var that = this;
+                //console.log(that.$store.state.indexData.flowResult)
                 setTimeout(function(){
                     if(that.$store.state.indexData.flowResult!=null){
                         that.listData = that.$store.state.indexData.flowResult;
