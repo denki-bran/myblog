@@ -10,26 +10,44 @@ const URL = {
 
 const indexData = {
     state: {
-        flowResult: null
+        flowResult: null,
+        bigTag:'bigtag_01'
             },
     mutations: {
         saveIndexData(state, data) {
             state.flowResult = data;
-
+        },
+        saveBigTag(state, data){
+            state.bigTag = data;
         }
     },
     actions: {
         setIndexData({commit}) {
            axios({
-            // url: 'https://www.easy-mock.com/mock/5ba99867b9b3b431f78ef3e2/blog/index',
             url: `${API}${URL.listAPI}`,
             method: 'get',
-            timeout: 5000
+            timeout: 10000
           })
             .then(function (res) {
                 commit('saveIndexData', res.data.con)
+                console.log('1');
             })
-            .catch(function (err) {
+            .catch(function(err){
+console.log('2');
+            })
+        },
+        setBigTag({commit},bigtag_id){
+            axios({
+                url: `${API}${URL.BigTagAPI}/${bigtag_id}`,
+                method: 'get',
+                timeout: 10000
+              })
+            .then(function (res) {
+                //console.log(res.data.con)
+                commit('saveBigTag', res.data.con)
+            })
+            .catch(function(err){
+
             })
         }
     }
