@@ -136,7 +136,8 @@ class ArticlesAPI(Resource):
             if result == []:
                 return []
             else:
-                return jsonConvert(json.loads(json.dumps(result, cls=CJsonEncoder)))
+                return result
+                #return jsonConvert(json.loads(json.dumps(result, cls=CJsonEncoder)))
         except mysql.connector.Error as e:
             print(e.message)
 

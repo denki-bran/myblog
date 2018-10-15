@@ -1,5 +1,6 @@
 import axios from 'axios'
-const API = `http://45.77.152.205:5000/api`
+const PORT = 30129
+const API = `http://45.77.152.205:${PORT}/api`
 const URL = {
     'listAPI':'/simple/list',
     'ArticleAPI':'/articles',
@@ -11,14 +12,18 @@ const URL = {
 const indexData = {
     state: {
         flowResult: null,
-        bigTag:'bigtag_01'
+        articleDetail:null,
+        pageOnLoading:1
             },
     mutations: {
         saveIndexData(state, data) {
             state.flowResult = data;
         },
-        saveBigTag(state, data){
-            state.bigTag = data;
+        saveArticleData(state,data){
+            state.articleDetail = data;
+        },
+        savePageLoadingState(state,data){
+            state.pageOnLoading = data;
         }
     },
     actions: {
@@ -30,26 +35,28 @@ const indexData = {
           })
             .then(function (res) {
                 commit('saveIndexData', res.data.con)
-                console.log('1');
             })
             .catch(function(err){
-console.log('2');
             })
         },
-        setBigTag({commit},bigtag_id){
+        setArticleData({commit},article_id) {
             axios({
-                url: `${API}${URL.BigTagAPI}/${bigtag_id}`,
-                method: 'get',
-                timeout: 10000
-              })
+            url: `${API}${URL.ArticleAPI}/${article_id}`,
+            method: 'get',
+            timeout: 10000
+          })
             .then(function (res) {
-                //console.log(res.data.con)
-                commit('saveBigTag', res.data.con)
+                commit('saveArticleData', res.data.con[0])
             })
             .catch(function(err){
-
             })
-        }
+        },
+        initArticleData({commit}) {
+            commit('saveArticleData',null)
+        },
+        setPageLoadingState({commit},state_flag){
+            commit('savePageLoadingState',state_flag)
+        }   
     }
 }
 

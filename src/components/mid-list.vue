@@ -11,25 +11,20 @@
         components:{
             conItem
         },
-        methods:{
-            ...mapActions(['setIndexData','setBigTag'])
-        },
         computed: {
           ...mapState({
             listData: state => state.indexData.flowResult,
-            BigTag: state=> state.indexData.bigTag
           })
         },
-        // mounted () {
-        //   this.$store.dispatch('setIndexData')
-        // },
+        created () {
+          this.$store.dispatch('setIndexData')
+          this.$store.dispatch('initArticleData')
+        },
         watch:{
             listData(val){
+                this.$store.dispatch('setPageLoadingState',2)
                 this.listData = val
             }
-        },
-        created(){
-            this.setBigTag('bigtag_01');
         }
     }
 </script>

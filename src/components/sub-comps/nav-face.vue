@@ -1,6 +1,6 @@
 <template>
     <div class="nav-face">
-        <div @click="faceClicked=!faceClicked" @animationend="faceClicked=!faceClicked" :class="[faceClicked?'face-icon-clicked':'','face-icon']">
+        <div @click='faceClickDetect()' @animationend="faceClicked=0" :class='setClass()'>
             <img src="@/assets/images/face.png" alt="">
         </div>
     </div>
@@ -10,7 +10,29 @@
         name:'nav-face',
         data(){
             return{
-                faceClicked:false
+                faceClicked:0
+            }
+        },
+        methods:{
+            faceClickDetect:function(){
+                if(this.faceClicked<2){
+                    this.faceClicked=this.faceClicked+1
+                }
+                else{
+                    this.faceClicked = 0;
+                }
+            },
+            setClass:function(){
+                let classBox = 'face-icon'
+                if(this.faceClicked == 0){
+                    return classBox;
+                }
+                else if(this.faceClicked == 1){
+                    return classBox+' face-icon-infinite';
+                }
+                else if(this.faceClicked == 2){
+                    return classBox+' face-icon-once';
+                }
             }
         }
     }
@@ -38,11 +60,17 @@
             border: 2px #f44336 solid;
         }
     }
-    .face-icon-clicked{
-        -webkit-animation: rotateAni 5s 1;
-        -moz-animation:    rotateAni 5s 1;
-        -o-animation:      rotateAni 5s 1;
-        animation:         rotateAni 5s 1; 
+    .face-icon-infinite{
+        -webkit-animation: rotateAni 5s infinite linear;
+        -moz-animation:    rotateAni 5s infinite linear;
+        -o-animation:      rotateAni 5s infinite linear;
+        animation:         rotateAni 5s infinite linear; 
+    }
+    .face-icon-once{
+        -webkit-animation: rotateAni 5s 1 linear;
+        -moz-animation:    rotateAni 5s 1 linear;
+        -o-animation:      rotateAni 5s 1 linear;
+        animation:         rotateAni 5s 1 linear; 
     }
 
     @keyframes rotateAni {

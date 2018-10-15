@@ -1,7 +1,7 @@
 <template>
     <div class="con-item">
         <div class="con-item-head clearfix con-el">
-            <h2 @click='enterArticle(itmData.article_id)' class="item-head-title">{{itmData.article_title}}</h2>
+            <a @click='enterArticle(itmData.article_id)' class="item-head-title" href="javascript:;">{{itmData.article_title}}</a>
             <h3 class="item-head-time">{{itmData.article_time}}</h3>
         </div>
         <div class="con-item-desc con-el" v-html="itmData.article_desc">
@@ -11,14 +11,14 @@
         <div class="con-item-foot con-el clearfix">
             <section class="tag tag-main">
                 <span class="tag-type">世界</span>
-                <a href="javascript:;" class="tag-name">
-                    {{bigtag}}
+                <a href="javascript:;" @click='enterCat(itmData.bigtag.big_tag_href)' class="tag-name">
+                    {{itmData.bigtag.big_tag_name}}
                 </a>
             </section>
             <section class="tag">
                 <span class="tag-type">路标</span>
-                <a href="javascript:;" class="tag-name" v-for="(tag,idx) in itmData.tags" :key="idx">
-                    {{tag.name}}
+                <a href="javascript:;" @click='enterTag(tag.tag_href)' class="tag-name" v-for="(tag,idx) in itmData.tags" :key="idx">
+                    {{tag.tag_name}}
                 </a>
             </section>
         </div>
@@ -32,19 +32,17 @@
           itmData: Object
         },
         methods:{
-            ...mapActions(['setBigTag']),
             enterArticle: function(article_id){
+                console.log(article_id);
                 this.$router.push({path:`/article/${article_id}`})
-            }
-        },
-        computed: {
-          ...mapState({
-            BigTag: state=> state.indexData.bigTag
-          })
-        },
-        // mounted(){
-        //     this.bigtag = this.setBigTag(itmData.article_bigtag_id);
-        // }
+            },
+            enterCat:function(bigtag_href){
+                this.$router.push({path:`/cat${bigtag_href}`})
+            },
+            enterTag:function(tag_href){
+                this.$router.push({path:`/tag${tag_href}`})
+            }        
+        }
     }
 </script>
 <style lang="scss" scoped>
@@ -72,6 +70,11 @@
             height:100%;
             overflow:hidden;
             cursor:pointer;
+            color:#333333;
+            &:hover{
+                color:#333333;
+                text-decoration:none;
+            }
         }
         .item-head-time{
             float:right;
@@ -96,38 +99,5 @@
     .con-item-foot{
         padding: 12px 24px;
     }
-    .tag{
-        float:left;
-        margin-right:20px;
-    }
-    .tag-type{
-        display:inline-block;
-        padding:0 5px;
-        background-color:#42b983;
-        color:#ffffff;
-        height:22px;
-        line-height:22px;
-        border:1px solid #42b983;
-        font-size:14px;
-    }
-    .tag-main{
-        .tag-type{
-            background-color:#0099ff;
-            border-color:#0099ff;
-        }
-    }
-    .tag-name{
-        display:inline-block;
-        height:22px;
-       background-color: #fafafa;
-        border-right: 1px solid #c5c5c5;
-        border-top: 1px solid #dadada;
-        border-bottom: 1px solid #d2d2d2;
-        line-height:22px;
-        font-size:14px;
-        padding:0 5px;
-        &:hover{
-            text-decoration:none;
-        }
-    }
+    
 </style>
