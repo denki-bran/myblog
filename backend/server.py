@@ -19,12 +19,7 @@ import random
 app = Flask(__name__)
 api = Api(app)
 config={
-        'user':'root',
-        'password':'dd19941130',
-        'database':'BLOG',
-        'host':'localhost',
-        'port':3306,
-        'charset':'utf8'
+
     }
 
 @app.after_request
