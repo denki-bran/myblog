@@ -18,13 +18,19 @@ import random
 
 app = Flask(__name__)
 api = Api(app)
-
+config={
+        'user':'root',
+        'password':'dd19941130',
+        'database':'BLOG',
+        'host':'localhost',
+        'port':3306,
+        'charset':'utf8'
+    }
 
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,session_id')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,HEAD')
-    # 这里不能使用add方法，否则会出现 The 'Access-Control-Allow-Origin' header contains multiple values 的问题
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 
@@ -66,12 +72,67 @@ class ListAPI(Resource):
             cursor.execute('SELECT * FROM Article ')
             columns=cursor.column_names
             result=cursor.fetchall()
-            cursor.close()
-            conn.close()
             if result == []:
                 return []
             else:
-                return jsonConvert(json.loads(json.dumps(result, cls=CJsonEncoder)))
+                _list = json.loads(json.dumps(result, cls=CJsonEncoder))
+                for itm in _list:
+                    #insert bigtag
+                    cursor.execute('SELECT * FROM Big_Tag WHERE big_tag_id = %s', (itm['article_bigtag_id'],))
+                    bt_columns=cursor.column_names
+                    bt_result=cursor.fetchall()
+                    itm['bigtag']=bt_result[0]
+                    #insert tags
+                    cursor.execute('SELECT * FROM Tag_Relationship WHERE article_id = %s', (itm['article_id'],))
+                    rel_columns=cursor.column_names
+                    rel_result=cursor.fetchall()
+                    #itm['tags']=tag_result
+                    tags=[]
+                    for rel_itm in rel_result:
+                        cursor.execute('SELECT * FROM Tag WHERE tag_id = %s', (rel_itm['tag_id'],))
+                        tag_columns=cursor.column_names
+                        tag_result=cursor.fetchall()
+                        tags.append(tag_result[0])
+                    itm['tags']=tags
+                cursor.close()
+                conn.close()
+                return jsonConvert(_list)
+        except mysql.connector.Error as e:
+            print(e.message)
+
+class catListAPI(Resource):
+    def get(self,bigtag_id):
+        try:
+            conn = mysql.connector.connect(**config)
+            cursor=conn.cursor(cursor_class=mysql.connector.cursor.MySQLCursorDict)
+            cursor.execute('SELECT * FROM Article WHERE article_bigtag_id = %s', (bigtag_id,))
+            columns=cursor.column_names
+            result=cursor.fetchall()
+            if result == []:
+                return []
+            else:
+                _list = json.loads(json.dumps(result, cls=CJsonEncoder))
+                for itm in _list:
+                    #insert bigtag
+                    cursor.execute('SELECT * FROM Big_Tag WHERE big_tag_id = %s', (itm['article_bigtag_id'],))
+                    bt_columns=cursor.column_names
+                    bt_result=cursor.fetchall()
+                    itm['bigtag']=bt_result[0]
+                    #insert tags
+                    cursor.execute('SELECT * FROM Tag_Relationship WHERE article_id = %s', (itm['article_id'],))
+                    rel_columns=cursor.column_names
+                    rel_result=cursor.fetchall()
+                    #itm['tags']=tag_result
+                    tags=[]
+                    for rel_itm in rel_result:
+                        cursor.execute('SELECT * FROM Tag WHERE tag_id = %s', (rel_itm['tag_id'],))
+                        tag_columns=cursor.column_names
+                        tag_result=cursor.fetchall()
+                        tags.append(tag_result[0])
+                    itm['tags']=tags
+                cursor.close()
+                conn.close()
+                return jsonConvert(_list)
         except mysql.connector.Error as e:
             print(e.message)
 
@@ -83,12 +144,32 @@ class ArticleAPI(Resource):
             cursor.execute('SELECT * FROM Article_Detail WHERE article_id = %s', (article_id,))
             columns=cursor.column_names
             result=cursor.fetchall()
-            cursor.close()
-            conn.close()
             if result == []:
                 return []
             else:
-                return jsonConvert(json.loads(json.dumps(result, cls=CJsonEncoder)))
+                #return jsonConvert(json.loads(json.dumps(result, cls=CJsonEncoder)))
+                _list = json.loads(json.dumps(result, cls=CJsonEncoder))
+                for itm in _list:
+                    #insert bigtag
+                    cursor.execute('SELECT * FROM Big_Tag WHERE big_tag_id = %s', (itm['article_bigtag_id'],))
+                    bt_columns=cursor.column_names
+                    bt_result=cursor.fetchall()
+                    itm['bigtag']=bt_result[0]
+                    #insert tags
+                    cursor.execute('SELECT * FROM Tag_Relationship WHERE article_id = %s', (itm['article_id'],))
+                    rel_columns=cursor.column_names
+                    rel_result=cursor.fetchall()
+                    #itm['tags']=tag_result
+                    tags=[]
+                    for rel_itm in rel_result:
+                        cursor.execute('SELECT * FROM Tag WHERE tag_id = %s', (rel_itm['tag_id'],))
+                        tag_columns=cursor.column_names
+                        tag_result=cursor.fetchall()
+                        tags.append(tag_result[0])
+                    itm['tags']=tags
+                cursor.close()
+                conn.close()
+                return jsonConvert(_list)
         except mysql.connector.Error as e:
             print(e.message)
 
@@ -136,8 +217,7 @@ class ArticlesAPI(Resource):
             if result == []:
                 return []
             else:
-                return result
-                #return jsonConvert(json.loads(json.dumps(result, cls=CJsonEncoder)))
+                return jsonConvert(json.loads(json.dumps(result, cls=CJsonEncoder)))
         except mysql.connector.Error as e:
             print(e.message)
 
@@ -313,6 +393,7 @@ class TagRelationAPI(Resource):
             print(e.message)
 
 api.add_resource(ListAPI,'/api/simple/list')#Article
+api.add_resource(catListAPI,'/api/cat/list/<bigtag_id>')#Article
 
 api.add_resource(ArticleAPI,'/api/articles/<article_id>')#Article_Detail
 api.add_resource(ArticlesAPI,'/api/articles')#Article_Detail
@@ -329,4 +410,4 @@ api.add_resource(TagRelationAPI,'/api/tags_relation/<tag_id>')#Tag_Relationship
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0',port=30129)

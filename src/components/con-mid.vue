@@ -1,22 +1,37 @@
 <template>
     <div class="con-mid">
-        <midList v-if='page === "home"'/>
-        <articleDetail v-else-if='page === "article"' />
+        <articleDetail v-if='page === "article"' />
+        <tagList v-else-if='page === "taglist"' />
+        <tagArticle v-else-if='page === "tag"' />
+        <catList v-else-if='match[0].name ==="cat"' />
+        <midList v-else/>
     </div>
 </template>
 <script>
     import midList from '@/components/mid-list.vue'
     import articleDetail from '@/components/article-detail.vue'
+    import catList from '@/components/cat-list.vue'
+    import tagList from '@/components/tag-list.vue'
+    import tagArticle from '@/components/tag-article.vue'
     export default{
         name:'con-mid',
         components:{
             midList,
-            articleDetail
+            articleDetail,
+            catList,
+            tagList,
+            tagArticle
         },
         computed:{
             page () {
               return this.$route.name
+            },
+            match(){
+                return this.$route.matched
             }
+        },
+        created(){
+            this.$store.dispatch('initArticleData')
         }
     }
 </script>
@@ -30,7 +45,7 @@
     }
     .tag{
         float:left;
-        margin-right:20px;
+        margin: 5px 20px 5px 0;
     }
     .tag-type{
         display:inline-block;

@@ -1,5 +1,5 @@
 <template>
-    <div class="mid-list">
+    <div class="cat-list">
         <conItem v-for="(itm,idx) in listData" :key="idx" :itmData="itm"/>
     </div>
 </template>
@@ -14,11 +14,28 @@
         computed: {
           ...mapState({
             listData: state => state.indexData.flowResult,
-          })
+          }),
+            page () {
+              return this.$route.name
+            },
+            catName(){
+                return this.$route.params.cat_name
+            },
+            catBigTag(){
+                if(this.catName == 'skill'){
+                    return 'bigtag_01'
+                }
+                else if(this.catName == 'create'){
+                    return 'bigtag_02'
+                }
+                else if(this.catName == 'life'){
+                    return 'bigtag_03'
+                }
+            }
         },
         created () {
             this.$store.dispatch('setPageStatus',1)
-            this.$store.dispatch('setIndexData')
+            this.$store.dispatch('setCatData',this.catBigTag)
         },
         watch:{
             listData(val){
@@ -29,7 +46,7 @@
     }
 </script>
 <style lang="scss">
-    .mid-list{
+    .cat-list{
         box-sizing:border-box;
         margin:0 30px;
     }

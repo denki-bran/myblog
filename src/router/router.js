@@ -16,6 +16,21 @@ export default new Router({
       path: '/article/:article_id',
       name: 'article',
       component:Article
+    },
+    {
+      path:'/cat/:cat_name',
+      name:'cat',
+      component:Home
+    },
+    {
+      path:'/taglist',
+      name:'taglist',
+      component:Home
+    },
+    {
+      path:'/tag/:tag_id',
+      name:'tag',
+      component:Home
     }
   ]
 })

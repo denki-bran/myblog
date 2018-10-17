@@ -5,7 +5,7 @@
 </template>
 <script>
     import conArticle from '@/components/sub-comps/con-article.vue'
-    import {mapActions,mapState} from 'vuex'
+    import {mapState} from 'vuex'
     export default{
         name:'article-detail',
         data(){
@@ -21,10 +21,12 @@
           })
         },
         created () {
-          this.$store.dispatch('setArticleData',this.$route.params.article_id)
+            this.$store.dispatch('setPageStatus',1)
+            this.$store.dispatch('setArticleData',this.$route.params.article_id)
         },
         watch:{
             articleCon(val){
+                this.$store.dispatch('setPageStatus',2)
                 this.articleCon = val
             }
         }

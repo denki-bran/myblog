@@ -17,7 +17,7 @@
             </section>
             <section class="tag">
                 <span class="tag-type">路标</span>
-                <a href="javascript:;" @click='enterTag(tag.tag_href)' class="tag-name" v-for="(tag,idx) in itmData.tags" :key="idx">
+                <a href="javascript:;" @click='enterTag(tag.tag_id)' class="tag-name" v-for="(tag,idx) in itmData.tags" :key="idx">
                     {{tag.tag_name}}
                 </a>
             </section>
@@ -25,7 +25,6 @@
     </div>
 </template>
 <script>
-    import {mapActions,mapState} from 'vuex'
     export default{
         name:'con-item',
         props: {
@@ -33,14 +32,13 @@
         },
         methods:{
             enterArticle: function(article_id){
-                console.log(article_id);
                 this.$router.push({path:`/article/${article_id}`})
             },
             enterCat:function(bigtag_href){
                 this.$router.push({path:`/cat${bigtag_href}`})
             },
-            enterTag:function(tag_href){
-                this.$router.push({path:`/tag${tag_href}`})
+            enterTag:function(tag_id){
+                this.$router.push({path:`/tag/${tag_id}`})
             }        
         }
     }
@@ -89,12 +87,17 @@
         padding: 16px 24px;
          border-bottom:1px solid #e5e5e5;
          p{
-            margin-bottom:10px;
             font-size:16px;
             &:last-child{
                 margin-bottom:0;
             }
          }
+         h1,h2,h3,p,li{
+                padding-bottom:10px;
+            }
+            p,li{
+                line-height:1.6em;
+            }
     }
     .con-item-foot{
         padding: 12px 24px;

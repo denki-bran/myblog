@@ -1,24 +1,33 @@
 <template>
-    <div class="mid-list">
+    <div class="tag-article">
+
         <conItem v-for="(itm,idx) in listData" :key="idx" :itmData="itm"/>
     </div>
 </template>
 <script>
     import conItem from '@/components/sub-comps/con-item.vue'
-    import {mapState} from 'vuex'
+    import conTagItem from '@/components/sub-comps/con-tagitem.vue'
+    import {mapState,mapGetters} from 'vuex'
     export default{
-        name:'mid-list',
+        name:'tag-article',
         components:{
-            conItem
+            conItem,
+            conTagItem
         },
         computed: {
           ...mapState({
             listData: state => state.indexData.flowResult,
-          })
+          }),
+          ...mapGetters({
+            cur_tag:'getCurrentTag'
+          }),
+            tag_id () {
+              return this.$route.params.tag_id
+            }
         },
         created () {
             this.$store.dispatch('setPageStatus',1)
-            this.$store.dispatch('setIndexData')
+            this.$store.dispatch('setTagtoArticleData',this.tag_id)
         },
         watch:{
             listData(val){
@@ -29,7 +38,7 @@
     }
 </script>
 <style lang="scss">
-    .mid-list{
+    .tag-article{
         box-sizing:border-box;
         margin:0 30px;
     }

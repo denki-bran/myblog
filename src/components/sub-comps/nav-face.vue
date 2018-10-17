@@ -1,17 +1,23 @@
 <template>
     <div class="nav-face">
-        <div @click='faceClickDetect()' @animationend="faceClicked=0" :class='setClass()'>
+        <div @click='enterIndex()' @animationend="faceClicked=0" :class='setClass()'>
             <img src="@/assets/images/face.png" alt="">
         </div>
     </div>
 </template>
 <script>
+    import { mapGetters } from 'vuex'
     export default{
         name:'nav-face',
         data(){
             return{
                 faceClicked:0
             }
+        },
+        computed: {
+          ...mapGetters({
+            pageStatus:'getPageStatus'
+          })
         },
         methods:{
             faceClickDetect:function(){
@@ -33,7 +39,18 @@
                 else if(this.faceClicked == 2){
                     return classBox+' face-icon-once';
                 }
+            },
+            enterIndex(){
+                this.$router.push({path:`/`})
             }
+        },
+        watch:{
+            pageStatus(val){
+                this.faceClicked = val;
+            }
+        },
+        created(){
+            this.faceClicked = this.pageStatus;
         }
     }
 </script>
@@ -61,16 +78,16 @@
         }
     }
     .face-icon-infinite{
-        -webkit-animation: rotateAni 5s infinite linear;
-        -moz-animation:    rotateAni 5s infinite linear;
-        -o-animation:      rotateAni 5s infinite linear;
-        animation:         rotateAni 5s infinite linear; 
+        -webkit-animation: rotateAni 2s infinite linear;
+        -moz-animation:    rotateAni 2s infinite linear;
+        -o-animation:      rotateAni 2s infinite linear;
+        animation:         rotateAni 2s infinite linear; 
     }
     .face-icon-once{
-        -webkit-animation: rotateAni 5s 1 linear;
-        -moz-animation:    rotateAni 5s 1 linear;
-        -o-animation:      rotateAni 5s 1 linear;
-        animation:         rotateAni 5s 1 linear; 
+        -webkit-animation: rotateAni 2s 1 linear;
+        -moz-animation:    rotateAni 2s 1 linear;
+        -o-animation:      rotateAni 2s 1 linear;
+        animation:         rotateAni 2s 1 linear; 
     }
 
     @keyframes rotateAni {

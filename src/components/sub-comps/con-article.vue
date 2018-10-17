@@ -16,7 +16,7 @@
                 </section>
                 <section class="tag tag-pos">
                     <span class="tag-type">路标</span>
-                    <a href="javascript:;" @click='enterTag(tag.tag_href)' class="tag-name" v-for="(tag,idx) in articleCon.tags" :key="idx">
+                    <a href="javascript:;" @click='enterTag(tag.tag_id)' class="tag-name" v-for="(tag,idx) in articleCon.tags" :key="idx">
                         {{tag.tag_name}}
                     </a>
                 </section>
@@ -36,9 +36,12 @@
             enterCat:function(bigtag_href){
                 this.$router.push({path:`/cat${bigtag_href}`})
             },
-            enterTag:function(tag_href){
-                this.$router.push({path:`/tag${tag_href}`})
-            }        
+            enterTag:function(tag_id){
+                this.$router.push({path:`/tag/${tag_id}`})
+            }           
+        },
+        created(){
+            this.$store.dispatch('initListData')
         }
     }
 </script>
@@ -102,7 +105,7 @@
             h1,h2,h3,p,li{
                 padding-bottom:10px;
             }
-            p{
+            p,li{
                 line-height:1.6em;
             }
         }
