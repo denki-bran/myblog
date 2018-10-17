@@ -392,6 +392,49 @@ class TagRelationAPI(Resource):
         except mysql.connector.Error as e:
             print(e.message)
 
+class TagtoArticleAPI(Resource):
+    def get(self,tag_id):
+        try:
+            conn = mysql.connector.connect(**config)
+            cursor=conn.cursor(cursor_class=mysql.connector.cursor.MySQLCursorDict)
+            cursor.execute('SELECT * FROM Tag_Relationship WHERE tag_id = %s', (tag_id,))
+            columns=cursor.column_names
+            result=cursor.fetchall()
+            if result == []:
+                return []
+            else:
+                _at_list = []
+                _p_list = json.loads(json.dumps(result, cls=CJsonEncoder))
+                for itm in _p_list:
+                    cursor.execute('SELECT * FROM Article WHERE article_id = %s', (itm['article_id'],))
+                    at_columns=cursor.column_names
+                    at_result=cursor.fetchall()
+                    _at_list.append(at_result[0])
+                _list = json.loads(json.dumps(_at_list, cls=CJsonEncoder))
+                for itm in _list:
+                    #insert bigtag
+                    cursor.execute('SELECT * FROM Big_Tag WHERE big_tag_id = %s', (itm['article_bigtag_id'],))
+                    bt_columns=cursor.column_names
+                    bt_result=cursor.fetchall()
+                    itm['bigtag']=bt_result[0]
+                    #insert tags
+                    cursor.execute('SELECT * FROM Tag_Relationship WHERE article_id = %s', (itm['article_id'],))
+                    rel_columns=cursor.column_names
+                    rel_result=cursor.fetchall()
+                    #itm['tags']=tag_result
+                    tags=[]
+                    for rel_itm in rel_result:
+                        cursor.execute('SELECT * FROM Tag WHERE tag_id = %s', (rel_itm['tag_id'],))
+                        tag_columns=cursor.column_names
+                        tag_result=cursor.fetchall()
+                        tags.append(tag_result[0])
+                    itm['tags']=tags
+                cursor.close()
+                conn.close()
+                return jsonConvert(_list)
+        except mysql.connector.Error as e:
+            print(e.message)
+
 api.add_resource(ListAPI,'/api/simple/list')#Article
 api.add_resource(catListAPI,'/api/cat/list/<bigtag_id>')#Article
 
@@ -405,7 +448,7 @@ api.add_resource(TagAPI,'/api/tags/<tag_name>')#Tag
 api.add_resource(TagsAPI,'/api/tags')#Tag
 
 api.add_resource(TagRelationAPI,'/api/tags_relation/<tag_id>')#Tag_Relationship
-
+api.add_resource(TagtoArticleAPI,'/api/tagtoarticle/<tag_id>')#Tag_Relationship
 
 
 
